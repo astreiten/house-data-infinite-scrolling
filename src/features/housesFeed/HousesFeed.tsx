@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import HousesGroup from "./_components/HousesGroup";
 import { IHouse } from "../../interfaces/IHouse";
-import fetchHouses from "./_utils/fetchHouses";
+import fetchHouses from "./_api/fetchHouses";
 import { InView } from "react-intersection-observer";
 import IntersectionObserver from "./_components/IntersectionObserver";
 
@@ -13,7 +13,7 @@ const HousesFeed = () => {
     async (retries = 5) => {
       setIsFetching(true);
       try {
-        const data = await fetchHouses(houses.length / 9 + 1, 9);
+        const data = await fetchHouses(houses.length / 9 + 1, 12);
         if (data.ok) {
           setHouses((prevHouses) => [...prevHouses, ...data.houses]);
         } else if (retries > 0) {

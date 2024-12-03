@@ -18,7 +18,7 @@ interface HouseCardProps {
 const HouseCard = ({ house }: HouseCardProps) => {
   return (
     <Grid
-      size={{ xs: 12, sm: 6, md: 4 }}
+      size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
       sx={{
         display: "flex",
         justifyContent: "center",
