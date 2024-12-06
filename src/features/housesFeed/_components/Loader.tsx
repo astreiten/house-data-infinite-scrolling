@@ -1,11 +1,15 @@
 import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid2";
 
 const Loader = () => {
   return (
-    <Box sx={{ display: "flex" }}>
+    <Grid
+      container
+      justifyContent="center"
+      sx={{ minHeight: "100px", marginTop: "rem" }}
+    >
       <CircularProgress />
-    </Box>
+    </Grid>
   );
 };
 

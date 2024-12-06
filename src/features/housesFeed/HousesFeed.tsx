@@ -3,8 +3,8 @@ import HousesGroup from "./_components/HousesGroup";
 import { IHouse } from "../../interfaces/IHouse";
 import fetchHouses from "./_api/fetchHouses";
 import { InView } from "react-intersection-observer";
-import IntersectionObserver from "./_components/IntersectionObserver";
 import { HOUSES_PER_PAGE } from "../../constants/constants";
+import Loader from "./_components/Loader";
 
 const HousesFeed = () => {
   const [houses, setHouses] = useState<IHouse[]>([]);
@@ -42,11 +42,10 @@ const HousesFeed = () => {
   return (
     <>
       <HousesGroup houses={houses} />
+      {isFetching && <Loader />}
       {houses.length > 0 && (
         <InView onChange={handleInView} threshold={0.5}>
-          {({ ref }) => (
-            <IntersectionObserver ref={ref} isFetching={isFetching} />
-          )}
+          {({ ref }) => <div ref={ref} />}
         </InView>
       )}
     </>
