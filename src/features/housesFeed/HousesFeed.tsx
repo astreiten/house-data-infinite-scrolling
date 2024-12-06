@@ -14,7 +14,7 @@ const HousesFeed = () => {
     async (retries = 5) => {
       setIsFetching(true);
       try {
-        const data = await fetchHouses(houses.length / 9 + 1, HOUSES_PER_PAGE);
+        const data = await fetchHouses(houses.length / 12 + 1, HOUSES_PER_PAGE);
         if (data.ok) {
           setHouses((prevHouses) => [...prevHouses, ...data.houses]);
         } else if (retries > 0) {

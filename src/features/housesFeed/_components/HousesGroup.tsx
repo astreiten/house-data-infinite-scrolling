@@ -7,10 +7,11 @@ interface HouseCardProps {
 }
 
 const HousesGroup = ({ houses }: HouseCardProps) => {
+  console.log("entro con " + houses.length);
   return (
     <Grid container spacing={2} data-testid="houses-group">
       {houses.map((house) => (
-        <HouseCard house={house} key={house.id} />
+        <HouseCard {...house} key={house.id} />
       ))}
     </Grid>
   );
