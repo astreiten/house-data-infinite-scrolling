@@ -6,7 +6,7 @@ const Loader = () => {
     <Grid
       container
       justifyContent="center"
-      sx={{ minHeight: "100px", marginTop: "rem" }}
+      sx={{ minHeight: "100px", marginTop: "1rem" }}
     >
       <CircularProgress />
     </Grid>

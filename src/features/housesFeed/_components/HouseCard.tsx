@@ -10,9 +10,12 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PersonIcon from "@mui/icons-material/Person";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import React from "react";
+import {
+  CONTACT_BUTTON_LABEL,
+  SHARE_BUTTON_LABEL,
+} from "../../../constants/constants";
 
 interface HouseCardProps {
-  id: number;
   address: string;
   homeowner: string;
   price: number;
@@ -20,10 +23,10 @@ interface HouseCardProps {
 }
 
 const HouseCard = React.memo(
-  ({ id, address, homeowner, price, photoURL }: HouseCardProps) => {
+  ({ address, homeowner, price, photoURL }: HouseCardProps) => {
     return (
       <Grid
-        size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
+        size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 3 }}
         data-testid="house-item"
         sx={{
           display: "flex",
@@ -75,10 +78,10 @@ const HouseCard = React.memo(
           </CardActionArea>
           <CardActions sx={{ justifyContent: "space-between", px: 2 }}>
             <Button size="small" color="primary" variant="outlined">
-              Share
+              {SHARE_BUTTON_LABEL}
             </Button>
             <Button size="small" color="primary" variant="contained">
-              Contact
+              {CONTACT_BUTTON_LABEL}
             </Button>
           </CardActions>
         </Card>

@@ -1,12 +1,22 @@
 import AppBar from "@mui/material/AppBar";
 import GiteIcon from "@mui/icons-material/Gite";
-import { Container, Toolbar, Typography, Box } from "@mui/material";
+import { Container, Toolbar, Typography, Box, Switch } from "@mui/material";
+import { NAVBAR_TITLE } from "../../constants/constants";
 
-const Navbar = () => {
+interface NavbarProps {
+  darkMode: boolean;
+  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Navbar = ({ darkMode, setDarkMode }: NavbarProps) => {
+  const handleToggle = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
     <AppBar position="static" sx={{ marginBottom: "2rem" }}>
-      <Container maxWidth="xl" sx={{ margin: 0 }}>
-        <Toolbar disableGutters id="back-to-top-anchor">
+      <Container maxWidth={false}>
+        <Toolbar id="back-to-top-anchor">
           <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
             <GiteIcon sx={{ mr: 1 }} />
             <Typography
@@ -17,12 +27,13 @@ const Navbar = () => {
                 fontFamily: "monospace",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
               }}
             >
-              Houses Feed
+              {NAVBAR_TITLE}
             </Typography>
+          </Box>
+          <Box>
+            <Switch checked={darkMode} onChange={handleToggle} />
           </Box>
         </Toolbar>
       </Container>
