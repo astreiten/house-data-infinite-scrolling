@@ -18,7 +18,7 @@ function App() {
         <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
         <HousesFeed />
         <ScrollTop>
-          <Fab size="large" aria-label="scroll back to top">
+          <Fab size="large" color="primary">
             <KeyboardArrowUpIcon />
           </Fab>
         </ScrollTop>

@@ -1,7 +1,8 @@
 import AppBar from "@mui/material/AppBar";
 import GiteIcon from "@mui/icons-material/Gite";
-import { Container, Toolbar, Typography, Box, Switch } from "@mui/material";
+import { Container, Toolbar, Typography, Box } from "@mui/material";
 import { NAVBAR_TITLE } from "../../constants/constants";
+import ModeSwitch from "./_components/ModeSwitch";
 
 interface NavbarProps {
   darkMode: boolean;
@@ -33,7 +34,7 @@ const Navbar = ({ darkMode, setDarkMode }: NavbarProps) => {
             </Typography>
           </Box>
           <Box>
-            <Switch checked={darkMode} onChange={handleToggle} />
+            <ModeSwitch checked={darkMode} onChange={handleToggle} />
           </Box>
         </Toolbar>
       </Container>

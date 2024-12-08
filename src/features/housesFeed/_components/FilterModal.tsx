@@ -16,19 +16,19 @@ interface FilterModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   maxPrice: number | undefined;
-  setMaxPrice: React.Dispatch<React.SetStateAction<number | undefined>>;
+  handleMaxPriceChange: (newMaxPrice: number | undefined) => void;
 }
 
 const FilterModal = ({
   open,
   setOpen,
   maxPrice,
-  setMaxPrice,
+  handleMaxPriceChange,
 }: FilterModalProps) => {
   const handleClose = () => setOpen(false);
   const [sliderValue, setSliderValue] = useState<number>(maxPrice ?? 80000);
   const handleApply = () => {
-    setMaxPrice(sliderValue);
+    handleMaxPriceChange(sliderValue);
     setOpen(false);
   };
 

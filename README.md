@@ -1,50 +1,40 @@
-# React + TypeScript + Vite
+# Infinite Scrolling Challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Running the project
 
-Currently, two official plugins are available:
+**Option 1: Dev Server**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1.  Go to the project root
+2.  Run `npm i`
+3.  Run `npm run dev`
+4.  Open your browser and go to http://localhost:5173/
 
-## Expanding the ESLint configuration
+**Option 2: Docker**
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1.  Go to the project root
+2.  Run `docker build -t houses-feed .`
+3.  Run docker run -d -p 3000:80 --name houses-feed-container houses-feed
+4.  Open your browser and go to http://localhost:3000/
 
-- Configure the top-level `parserOptions` property like this:
+**Option 3: Vercel**
+You can access the latest deployment of the application [here](https://house-data-infinite-scrolling.vercel.app/)
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+# Running tests
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+This project uses Vitest for testing. To run the test suite:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+1.  Go to the project root
+2.  Run `npm i`
+3.  Run `npm run test`
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Additionally, you can run `npm run test:ui` to access a web UI for viewing and interacting with the tests.
+
+# Road to production
+
+This brief section aims to demonstrate my understanding of what is needed to deploy an app like the one I built to production. I primarily use **AWS EKS** in my day-to-day work so I will use it as an example. However, any Kubernetes-based approach would be similar.
+
+The first step was to create a `Dockerfile` for the app. In this case, the `Dockerfile` is fairly simple since we don't have many arguments or stages. I used it to create the production bundle for the application and serve it using Nginx. I also included some basic Nginx configuration files. If we were to handle multiple environments, we would need to extend the base configuration for each one.
+
+Once the `Dockerfile` is created, the next step would be configuring the Helm charts to define and manage the Kubernetes resources needed to deploy the application. Helm charts allow to package of the Kubernetes manifests into reusable templates, which can be easily customized with values for different environments. Once the charts are set up, Helm can be used to deploy, upgrade, and manage the application lifecycle in Kubernetes.
+
+Next, I would need to configure the CI/CD pipeline. I would create a `Jenkinsfile` with the necessary steps, where, for example, environment variables would be set, and the `Dockerfile` would be used to create a Docker image. The `Jenkinsfile` would then be referenced by a pipeline (e.g., CloudBees) that triggers automatically every time something is pushed to the GitHub repository.

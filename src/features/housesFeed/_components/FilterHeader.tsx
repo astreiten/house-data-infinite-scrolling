@@ -9,10 +9,13 @@ import {
 
 interface FilterHeaderProps {
   maxPrice: number | undefined;
-  setMaxPrice: React.Dispatch<React.SetStateAction<number | undefined>>;
+  handleMaxPriceChange: (newMaxPrice: number | undefined) => void;
 }
 
-const FilterHeader = ({ maxPrice, setMaxPrice }: FilterHeaderProps) => {
+const FilterHeader = ({
+  maxPrice,
+  handleMaxPriceChange,
+}: FilterHeaderProps) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   return (
@@ -21,7 +24,7 @@ const FilterHeader = ({ maxPrice, setMaxPrice }: FilterHeaderProps) => {
         open={openModal}
         setOpen={setOpenModal}
         maxPrice={maxPrice}
-        setMaxPrice={setMaxPrice}
+        handleMaxPriceChange={handleMaxPriceChange}
       />
       <Grid
         size={{ xs: 4, sm: 1, md: 1, lg: 1, xl: 1 }}
@@ -45,7 +48,7 @@ const FilterHeader = ({ maxPrice, setMaxPrice }: FilterHeaderProps) => {
         <Grid>
           <Chip
             label={`${MAXPRICE_CHIP_LABEL}${maxPrice}`}
-            onDelete={() => setMaxPrice(undefined)}
+            onDelete={() => handleMaxPriceChange(undefined)}
             color="primary"
             sx={{ ml: 1 }}
           />

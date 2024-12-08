@@ -3,47 +3,69 @@ import HousesGroup from "./_components/HousesGroup";
 import { IHouse } from "../../interfaces/IHouse";
 import fetchHouses from "./_api/fetchHouses";
 import { InView } from "react-intersection-observer";
-import { HOUSES_PER_PAGE } from "../../constants/constants";
+import {
+  HOUSES_PER_PAGE,
+  MAX_RETRIES,
+  NOHOUSES_TEXT,
+  NORETRIES_TEXT,
+  OBSERVER_THRESHOLD,
+} from "../../constants/constants";
 import Loader from "./_components/Loader";
 import filterHousesByPrice from "./_utils/filterHousesByPrice";
 import FilterHeader from "./_components/FilterHeader";
+import Message from "./_components/Message";
 
 const HousesFeed = () => {
   const [houses, setHouses] = useState<IHouse[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
+  const [hasReachedEnd, setHasReachedEnd] = useState(false);
+  const [hasFetchFailed, setHasFetchFailed] = useState(false);
+
+  const processFetchedHouses = useCallback(
+    (houses: IHouse[]) => {
+      if (houses.length === 0) {
+        setHasReachedEnd(true);
+        return;
+      }
+      const filteredHouses = filterHousesByPrice(houses, maxPrice);
+      setHouses((prev) => [...prev, ...filteredHouses]);
+      setCurrentPage((prev) => prev + 1);
+    },
+    [maxPrice]
+  );
 
   const fetchAndSetHouses = useCallback(
-    async (retries = 5) => {
+    async (retries = MAX_RETRIES) => {
       setIsFetching(true);
       try {
         const data = await fetchHouses(currentPage, HOUSES_PER_PAGE);
         if (data.ok) {
-          const filteredHouses = filterHousesByPrice(data.houses, maxPrice);
-          setHouses((prevHouses) => [...prevHouses, ...filteredHouses]);
-          setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
+          processFetchedHouses(data.houses);
         } else if (retries > 0) {
           await fetchAndSetHouses(retries - 1);
+        } else {
+          setHasFetchFailed(true);
         }
       } finally {
         setIsFetching(false);
       }
     },
-    [currentPage, maxPrice]
+    [currentPage, processFetchedHouses]
   );
 
   const handleInView = (inView: boolean) => {
-    console.log(inView);
     if (inView && !isFetching) {
       fetchAndSetHouses();
     }
   };
 
-  useEffect(() => {
+  const handleMaxPriceChange = (newMaxPrice: number | undefined) => {
+    setMaxPrice(newMaxPrice);
     setCurrentPage(1);
     setHouses([]);
-  }, [maxPrice]);
+  };
 
   useEffect(() => {
     if (houses.length === 0) {
@@ -53,12 +75,19 @@ const HousesFeed = () => {
 
   return (
     <>
-      <FilterHeader maxPrice={maxPrice} setMaxPrice={setMaxPrice} />
+      {houses.length > 0 && (
+        <FilterHeader
+          maxPrice={maxPrice}
+          handleMaxPriceChange={handleMaxPriceChange}
+        />
+      )}
       <HousesGroup houses={houses} />
       {isFetching && <Loader />}
-      {houses.length > 0 && (
-        <InView onChange={handleInView} threshold={0.5}>
-          {({ ref }) => <div ref={ref} />}
+      {hasReachedEnd && <Message text={NOHOUSES_TEXT} />}
+      {hasFetchFailed && <Message text={NORETRIES_TEXT} />}
+      {houses.length > 0 && !hasReachedEnd && !hasFetchFailed && (
+        <InView onChange={handleInView} threshold={OBSERVER_THRESHOLD}>
+          {({ ref }) => <div ref={ref} data-testid="observer" />}
         </InView>
       )}
     </>
