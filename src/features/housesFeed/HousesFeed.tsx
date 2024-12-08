@@ -5,6 +5,7 @@ import fetchHouses from "./_api/fetchHouses";
 import { InView } from "react-intersection-observer";
 import {
   HOUSES_PER_PAGE,
+  HOUSES_PER_PAGE_FILTERED,
   MAX_RETRIES,
   NOHOUSES_TEXT,
   NORETRIES_TEXT,
@@ -36,11 +37,15 @@ const HousesFeed = () => {
     [maxPrice]
   );
 
+  const getHousesPerPage = useCallback(() => {
+    return maxPrice ? HOUSES_PER_PAGE_FILTERED : HOUSES_PER_PAGE;
+  }, [maxPrice]);
+
   const fetchAndSetHouses = useCallback(
     async (retries = MAX_RETRIES) => {
       setIsFetching(true);
       try {
-        const data = await fetchHouses(currentPage, HOUSES_PER_PAGE);
+        const data = await fetchHouses(currentPage, getHousesPerPage());
         if (data.ok) {
           processFetchedHouses(data.houses);
         } else if (retries > 0) {
@@ -52,7 +57,7 @@ const HousesFeed = () => {
         setIsFetching(false);
       }
     },
-    [currentPage, processFetchedHouses]
+    [currentPage, processFetchedHouses, getHousesPerPage]
   );
 
   const handleInView = (inView: boolean) => {
@@ -65,6 +70,8 @@ const HousesFeed = () => {
     setMaxPrice(newMaxPrice);
     setCurrentPage(1);
     setHouses([]);
+    setHasReachedEnd(false);
+    setHasFetchFailed(false);
   };
 
   useEffect(() => {
@@ -87,7 +94,13 @@ const HousesFeed = () => {
       {hasFetchFailed && <Message text={NORETRIES_TEXT} />}
       {houses.length > 0 && !hasReachedEnd && !hasFetchFailed && (
         <InView onChange={handleInView} threshold={OBSERVER_THRESHOLD}>
-          {({ ref }) => <div ref={ref} data-testid="observer" />}
+          {({ ref }) => (
+            <div
+              style={{ minHeight: "3rem" }}
+              ref={ref}
+              data-testid="observer"
+            />
+          )}
         </InView>
       )}
     </>

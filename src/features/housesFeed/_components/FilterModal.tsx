@@ -26,7 +26,9 @@ const FilterModal = ({
   handleMaxPriceChange,
 }: FilterModalProps) => {
   const handleClose = () => setOpen(false);
-  const [sliderValue, setSliderValue] = useState<number>(maxPrice ?? 80000);
+  const [sliderValue, setSliderValue] = useState<number>(
+    maxPrice ?? MAXPRICE_MINVALUE
+  );
   const handleApply = () => {
     handleMaxPriceChange(sliderValue);
     setOpen(false);
