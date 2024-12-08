@@ -1,5 +1,13 @@
 # Infinite Scrolling Challenge
 
+# Introduction
+
+This Vite React app implements the main requirement, but also has some extra features:
+
+- Filtering: I implemented it client-side. In a real-world scenario, I would probably use params on the API endpoint, but in this case, filtering was not supported, so I had to do it on the front end.
+- Dark/Light theme
+- Docker support
+
 # Running the project
 
 **Option 1: Dev Server**
