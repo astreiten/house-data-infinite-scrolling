@@ -21,7 +21,7 @@ This Vite React app implements the main requirement, but also has some extra fea
 
 1.  Go to the project root
 2.  Run `docker build -t houses-feed .`
-3.  Run docker run -d -p 3000:80 --name houses-feed-container houses-feed
+3.  Run `docker run -d -p 3000:80 --name houses-feed-container houses-feed`
 4.  Open your browser and go to http://localhost:3000/
 
 **Option 3: Vercel**
